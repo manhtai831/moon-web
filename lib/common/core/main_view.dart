@@ -29,7 +29,8 @@ class MainView extends StatelessWidget {
     Widget? draw;
     Widget? endDraw;
     if (!kIsWeb) {
-      appBar = BaseAppBar(title: title, functionLeading: () => onLeading?.call());
+      appBar = BaseAppBar(
+          title: title, functionLeading: onLeading != null ? () => onLeading?.call() : null);
       nav = bottomNavigationBar;
       draw = drawer;
       endDraw = endDrawer;
@@ -37,7 +38,7 @@ class MainView extends StatelessWidget {
     return WillPopScope(
         child: Scaffold(
             appBar: appBar,
-            body: body,
+            body: SafeArea(child: body ?? const SizedBox()),
             bottomNavigationBar: nav,
             drawer: draw,
             endDrawer: endDraw,

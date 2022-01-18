@@ -31,7 +31,7 @@ class BaseSmartRefresh extends StatelessWidget {
             ? Center(
                 child: Text(
                   KeyLanguage.empty.tr,
-                  style: theme.textTheme.bodyText1,
+                  style: appStyle.textTheme.bodyText1,
                 ),
               )
             : const SizedBox(width: 0, height: 0),
