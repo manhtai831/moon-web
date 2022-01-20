@@ -16,7 +16,9 @@ class BaseView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (status == Status.error) {
-      return onFail ?? BaseErrorDialog(content: content);
+      return onFail ?? BaseErrorDialog(content: content, showConfirm: false);
+    } else if (status == Status.noConnection) {
+      return onFail ?? BaseErrorDialog(content: content, textButtonConfirm: 'Thử lại');
     } else if (status == Status.loading) {
       return onLoading ?? const BaseIndicator();
     } else if (status == Status.waiting) {
