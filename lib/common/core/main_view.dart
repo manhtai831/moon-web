@@ -29,8 +29,8 @@ class MainView extends StatelessWidget {
     Widget? draw;
     Widget? endDraw;
     if (!kIsWeb) {
-      appBar = BaseAppBar(
-          title: title, functionLeading: onLeading != null ? () => onLeading?.call() : null);
+      appBar =
+          BaseAppBar(title: title, onLeading: onLeading != null ? () => onLeading?.call() : null);
       nav = bottomNavigationBar;
       draw = drawer;
       endDraw = endDrawer;
