@@ -13,11 +13,12 @@ class BaseIndicator extends StatelessWidget {
     return kIsWeb
         ? LinearProgressIndicator(
             minHeight: 4,
-            color: ColorResource.primary,
-            backgroundColor: ColorResource.primary.withOpacity(0.5))
+            color: ColorResource.primarySwatch,
+            backgroundColor: ColorResource.primarySwatch.withOpacity(0.5))
         : Center(
             child: Platform.isAndroid
-                ? const CircularProgressIndicator(color: ColorResource.primary)
+                ? const CircularProgressIndicator(
+                    color: ColorResource.primarySwatch)
                 : const CupertinoActivityIndicator());
   }
 }
