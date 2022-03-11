@@ -2,17 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:shop_all_fe/common/export_this.dart';
 
 @immutable
-class BaseTextFormField extends StatelessWidget {
+class BaseTextFormField extends StatefulWidget {
   final TextEditingController editingController;
   final Function(String value)? onChange;
-  final bool? readOnly;
-  final bool? enable;
-  final TextInputType? textInputType;
-  final int? maxLines;
-  final Icon? headIcon;
+  final String? Function(String? value)? onValidator;
   final Function(String value)? onFieldSubmitted;
   final Function()? onEditingComplete;
   final Function()? onTab;
+  final bool? readOnly;
+  final bool? enable;
+  final bool? obscureText;
+  final TextInputType? textInputType;
+  final int? maxLines;
+  final Icon? headIcon;
   final String? hint, label, error;
   final FocusNode? focusNode;
   final TextInputAction? textInputAction;
@@ -26,7 +28,6 @@ class BaseTextFormField extends StatelessWidget {
   final Widget? prefixIcon;
   final Widget? icon;
   final EdgeInsetsGeometry? contentPadding;
-  final bool? obscureText;
 
   // cach mot khoang le ben trai mac dinh
   final bool? filled;
@@ -47,6 +48,7 @@ class BaseTextFormField extends StatelessWidget {
     required this.editingController,
     this.onChange,
     this.maxLines,
+    this.onValidator,
     this.readOnly,
     this.error,
     this.headIcon,
@@ -83,99 +85,114 @@ class BaseTextFormField extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<BaseTextFormField> createState() => _BaseTextFormFieldState();
+}
+
+class _BaseTextFormFieldState extends State<BaseTextFormField> {
+  final Color? _highColor = ColorResource.primary;
+  final Color? _lowColor = ColorResource.colorHintText;
+  Color? _labelColor = ColorResource.colorHintText;
+
+  @override
   Widget build(BuildContext context) {
-    return TextFormField(
-      textAlignVertical: TextAlignVertical.center,
-      focusNode: focusNode,
-      controller: editingController,
-      readOnly: readOnly ?? false,
-      enabled: enable ?? true,
-      maxLines: maxLines ?? 1,
-      keyboardType: textInputType ?? TextInputType.text,
-      textInputAction: textInputAction ?? TextInputAction.done,
-      textCapitalization: textCapitalization ?? TextCapitalization.sentences,
-      maxLength: maxLength,
-      obscureText: obscureText ?? false,
-      decoration: border(),
-      onChanged: (value) => onChange?.call(value),
-      onFieldSubmitted: (value) => onFieldSubmitted?.call(value),
-      onEditingComplete: () => onEditingComplete,
-      onTap: () => onTab,
+    return Focus(
+      onFocusChange: (hasFocus) {
+        setState(() => _labelColor = hasFocus ? _highColor : _lowColor);
+      },
+      child: TextFormField(
+        textAlignVertical: TextAlignVertical.center,
+        focusNode: widget.focusNode,
+        controller: widget.editingController,
+        readOnly: widget.readOnly ?? false,
+        enabled: widget.enable ?? true,
+        maxLines: widget.maxLines ?? 1,
+        keyboardType: widget.textInputType ?? TextInputType.text,
+        textInputAction: widget.textInputAction ?? TextInputAction.next,
+        textCapitalization: widget.textCapitalization ?? TextCapitalization.sentences,
+        maxLength: widget.maxLength,
+        obscureText: widget.obscureText ?? false,
+        decoration: border(),
+        onChanged: widget.onChange,
+        onFieldSubmitted: widget.onFieldSubmitted,
+        validator: widget.onValidator,
+        onEditingComplete: widget.onEditingComplete,
+        onTap: widget.onTab,
+      ),
     );
   }
 
   InputDecoration border() {
     double widthBorder = 1.5;
-    return !isCollapsed!
+    return !widget.isCollapsed!
         ? InputDecoration(
-            hintStyle: hintStyle ??
+            hintStyle: widget.hintStyle ??
                 appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText),
-            hintText: hint,
-            errorText: error,
-            label: label != null
+            hintText: widget.hint,
+            errorText: widget.error,
+            label: widget.label != null
                 ? Text(
-                    label ?? '',
-                    style: appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText),
+                    widget.label ?? '',
+                    style: appStyle.textTheme.bodyText1?.apply(color: _labelColor),
                   )
-                : Text(hint ?? '',
-                    style: appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText)),
-            suffixIcon: suffixIcon,
+                : Text(widget.hint ?? '',
+                    style: appStyle.textTheme.bodyText1?.apply(color: _labelColor)),
+            suffixIcon: widget.suffixIcon,
             suffixIconConstraints: BoxConstraints(
-              minWidth: paddingSuffixIcon ?? 36,
-              minHeight: paddingSuffixIcon ?? 36,
+              minWidth: widget.paddingSuffixIcon ?? 36,
+              minHeight: widget.paddingSuffixIcon ?? 36,
             ),
-            prefixIcon: prefixIcon,
+            prefixIcon: widget.prefixIcon,
             prefixIconConstraints: BoxConstraints(
-              minWidth: paddingPrefixIcon ?? 36,
-              minHeight: paddingPrefixIcon ?? 36,
+              minWidth: widget.paddingPrefixIcon ?? 36,
+              minHeight: widget.paddingPrefixIcon ?? 36,
             ),
-            contentPadding: contentPadding,
-            filled: filled,
-            fillColor: bg ?? Colors.white,
-            icon: icon,
-            isDense: isDense,
-            enabledBorder: isBorder!
-                ? enabledBorder ??
+            contentPadding: widget.contentPadding,
+            filled: widget.filled,
+            fillColor: widget.bg ?? Colors.white,
+            icon: widget.icon,
+            isDense: widget.isDense,
+            enabledBorder: widget.isBorder!
+                ? widget.enabledBorder ??
                     OutlineInputBorder(
-                      borderSide: BorderSide(width: widthBorder, color: Colors.grey),
+                      borderSide: BorderSide(width: widthBorder, color: Colors.black12),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(borderRadius ?? 8),
+                        Radius.circular(widget.borderRadius ?? 8),
                       ),
                     )
                 : null,
-            focusedBorder: isBorder!
-                ? focusedBorder ??
+            focusedBorder: widget.isBorder!
+                ? widget.focusedBorder ??
                     OutlineInputBorder(
                       borderSide:
                           BorderSide(width: widthBorder, color: ColorResource.primarySwatch),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(borderRadius ?? 8),
+                        Radius.circular(widget.borderRadius ?? 8),
                       ),
                     )
                 : null,
-            errorBorder: isBorder!
-                ? errorBorder ??
+            errorBorder: widget.isBorder!
+                ? widget.errorBorder ??
                     OutlineInputBorder(
                       borderSide: BorderSide(width: widthBorder, color: Colors.red),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(borderRadius ?? 8),
+                        Radius.circular(widget.borderRadius ?? 8),
                       ),
                     )
                 : null,
-            focusedErrorBorder: isBorder!
-                ? focusedErrorBorder ??
+            focusedErrorBorder: widget.isBorder!
+                ? widget.focusedErrorBorder ??
                     OutlineInputBorder(
                       borderSide: BorderSide(width: widthBorder, color: Colors.red),
                       borderRadius: BorderRadius.all(
-                        Radius.circular(borderRadius ?? 8),
+                        Radius.circular(widget.borderRadius ?? 8),
                       ),
                     )
                 : null,
           )
         : InputDecoration.collapsed(
-            hintStyle: hintStyle,
-            hintText: hint,
-            fillColor: bg,
+            hintStyle: widget.hintStyle,
+            hintText: widget.hint,
+            fillColor: widget.bg,
           );
   }
 }

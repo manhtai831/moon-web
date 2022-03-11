@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class BaseResponse {
   String? requestId;
   String? at;
@@ -11,19 +13,6 @@ class BaseResponse {
     at = json['at'];
     error = json['error'] != null ? Error.fromJson(json['error']) : null;
     data = json['data'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['requestId'] = requestId;
-    data['at'] = at;
-    if (error != null) {
-      data['error'] = error!.toJson();
-    }
-    if (this.data != null) {
-      data['data'] = this.data!.toJson();
-    }
-    return data;
   }
 }
 

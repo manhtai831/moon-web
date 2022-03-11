@@ -26,9 +26,13 @@ class BaseErrorDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      backgroundColor: Colors.white,
       title: Text(title ?? 'Thông báo', style: appStyle.textTheme.headline2),
+      contentPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
+      actionsPadding: const EdgeInsets.symmetric(vertical: 8),
+      titlePadding: const EdgeInsets.only(top: 16, left: 16),
       content: Text(content ?? '', style: appStyle.textTheme.bodyText1),
-      insetPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+      insetPadding: const EdgeInsets.symmetric(vertical: 16, horizontal: 16),
       actions: [
         showConfirm ?? true
             ? TextButton(
@@ -38,7 +42,7 @@ class BaseErrorDialog extends StatelessWidget {
                 },
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(textButtonConfirm ?? 'Đồng ý', style: appStyle.textTheme.headline3),
+                  child: Text(textButtonConfirm ?? 'Đồng ý', style: appStyle.textTheme.headline6),
                 ),
               )
             : const SizedBox(),

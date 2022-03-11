@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop_all_fe/common/export_this.dart';
 
-class BaseView<T extends BaseController> extends GetWidget<T> {
+class BaseView extends StatelessWidget {
   final Status? status;
   final Widget? onSuccess;
   final Widget? onFail;
@@ -24,7 +24,7 @@ class BaseView<T extends BaseController> extends GetWidget<T> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Obx(() => body(context)),
+        child: body(context),
       ),
       backgroundColor: Colors.white,
     );
@@ -32,35 +32,48 @@ class BaseView<T extends BaseController> extends GetWidget<T> {
 
   Widget buildSuccess(BuildContext context) => Container();
 
-  Widget buildError() => BaseErrorDialog(content: controller.message.value, showConfirm: false);
+  // buildError() => BaseErrorDialog(
+  //       content: controller.message.value,
+  //       showConfirm: false,
+  //       mCancel: () => buildSuccess(Get.context!),
+  //     );
+  buildError() => Get.dialog(BaseErrorDialog(
+        content: 'controller.message.value',
+        showConfirm: false,
+        mCancel: () => buildSuccess(Get.context!),
+      ));
 
   // CircularProgressBar thay thế view (Không nhìn thấy view)
   Widget buildLoading() => const BaseIndicator();
 
   // CircularProgressBar đè lên trên view (View hiện mờ ở đằng sau)
-  Widget buildWaiting() => Column(
+  Widget buildWaiting() => Stack(
+        fit: StackFit.expand,
         children: [
-          Container(
-            color: Colors.black26.withOpacity(0.05),
-            child: onLoading ?? const BaseIndicator(),
+          Positioned(
+            top: 0,
+            child: Container(
+              height: 4,
+              width: Get.width,
+              color: Colors.black26.withOpacity(0.05),
+              child: onLoading ?? const BaseIndicator(),
+            ),
           ),
-          Expanded(
-            child: onSuccess ?? Container(),
-          ),
+          Container(width: Get.width, height: Get.height, child: onSuccess ?? Container()),
         ],
       );
 
   Status _getStatus() {
-    return status ?? Get.find<T>().status.value;
+    return status!;
   }
 
   Widget body(BuildContext context) {
     switch (_getStatus()) {
       case Status.error:
-        return _buildError(context);
+        return _buildSuccess(context);
       case Status.noConnection:
         return onFail ??
-            BaseErrorDialog(content: controller.message.value, textButtonConfirm: 'Thử lại');
+            BaseErrorDialog(content: 'controller.message.value', textButtonConfirm: 'Thử lại');
       case Status.loading:
         return _buildLoading(context);
       case Status.waiting:
@@ -77,9 +90,9 @@ class BaseView<T extends BaseController> extends GetWidget<T> {
 
   Widget _buildError(BuildContext context) {
     if (onFail != null) {
-      return onFail ?? BaseErrorDialog(content: controller.message.value, showConfirm: false);
+      return onFail ?? BaseErrorDialog(content: 'controller.message.value', showConfirm: false);
     }
-    return buildError();
+    return buildSuccess(context);
   }
 
   Widget _buildLoading(BuildContext context) {
@@ -91,14 +104,14 @@ class BaseView<T extends BaseController> extends GetWidget<T> {
 
   Widget _buildWaiting(BuildContext context) {
     if (onWaiting != null) {
-      return Column(
+      return Stack(
         children: [
+          Expanded(
+            child: onSuccess ?? Container(),
+          ),
           Container(
             color: Colors.black26.withOpacity(0.05),
             child: onLoading ?? const BaseIndicator(),
-          ),
-          Expanded(
-            child: onSuccess ?? Container(),
           ),
         ],
       );
