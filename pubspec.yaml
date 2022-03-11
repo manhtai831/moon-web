@@ -53,14 +53,17 @@ flutter:
 
   assets:
     - assets/icons/
-#
-#  fonts:
-#    - family: Rokkitt
-#      fonts:
-#        - asset: assets/fonts/Rokkitt-Bold.ttf
-#          weight: 800
-#        - asset: assets/fonts/Rokkitt-Medium.ttf
-#          weight: 500
+    - assets/images/
+
+  fonts:
+    - family: LexendExa
+      fonts:
+        - asset: assets/fonts/lexend_exa_light.ttf
+          weight: 400
+        - asset: assets/fonts/lexend_exa_regular.ttf
+          weight: 700
+        - asset: assets/fonts/lexend_exa_medium.ttf
+          weight: 900
 #flutter_icons:
 #  android: true
 #  ios: true

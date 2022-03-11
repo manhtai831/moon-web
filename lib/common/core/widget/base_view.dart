@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shop_all_fe/common/export_this.dart';
 
-abstract class BaseView<T extends BaseController> extends GetWidget<T> {
+class BaseView<T extends BaseController> extends GetWidget<T> {
   final Status? status;
   final Widget? onSuccess;
   final Widget? onFail;
@@ -23,25 +23,29 @@ abstract class BaseView<T extends BaseController> extends GetWidget<T> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(child: Obx(() => body(context))),
+      body: SafeArea(
+        child: Obx(() => body(context)),
+      ),
       backgroundColor: Colors.white,
     );
   }
 
-  Widget buildSuccess(BuildContext context);
+  Widget buildSuccess(BuildContext context) => Container();
 
-  Widget buildError() => BaseErrorDialog(content: content, showConfirm: false);
+  Widget buildError() => BaseErrorDialog(content: controller.message.value, showConfirm: false);
 
   // CircularProgressBar thay thế view (Không nhìn thấy view)
   Widget buildLoading() => const BaseIndicator();
 
   // CircularProgressBar đè lên trên view (View hiện mờ ở đằng sau)
-  Widget buildWaiting() => Stack(
+  Widget buildWaiting() => Column(
         children: [
-          onSuccess ?? Container(),
           Container(
             color: Colors.black26.withOpacity(0.05),
             child: onLoading ?? const BaseIndicator(),
+          ),
+          Expanded(
+            child: onSuccess ?? Container(),
           ),
         ],
       );
@@ -56,7 +60,7 @@ abstract class BaseView<T extends BaseController> extends GetWidget<T> {
         return _buildError(context);
       case Status.noConnection:
         return onFail ??
-            BaseErrorDialog(content: content, textButtonConfirm: 'Thử lại');
+            BaseErrorDialog(content: controller.message.value, textButtonConfirm: 'Thử lại');
       case Status.loading:
         return _buildLoading(context);
       case Status.waiting:
@@ -73,7 +77,7 @@ abstract class BaseView<T extends BaseController> extends GetWidget<T> {
 
   Widget _buildError(BuildContext context) {
     if (onFail != null) {
-      return onFail ?? BaseErrorDialog(content: content, showConfirm: false);
+      return onFail ?? BaseErrorDialog(content: controller.message.value, showConfirm: false);
     }
     return buildError();
   }
@@ -87,12 +91,14 @@ abstract class BaseView<T extends BaseController> extends GetWidget<T> {
 
   Widget _buildWaiting(BuildContext context) {
     if (onWaiting != null) {
-      return Stack(
+      return Column(
         children: [
-          onSuccess ?? Container(),
           Container(
             color: Colors.black26.withOpacity(0.05),
             child: onLoading ?? const BaseIndicator(),
+          ),
+          Expanded(
+            child: onSuccess ?? Container(),
           ),
         ],
       );

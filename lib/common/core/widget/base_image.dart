@@ -45,7 +45,6 @@ class BaseImage {
       padding: paddingValue,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(borderRadiusValue ?? 0),
-        color: Colors.red,
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(borderRadiusValue ?? 0),
@@ -110,16 +109,14 @@ class BaseImage {
           fit: boxFit ?? BoxFit.cover,
           errorBuilder: (context, exception, stackTrace) =>
               const Icon(Icons.collections_rounded, color: Colors.grey),
-          loadingBuilder: (BuildContext ctx, Widget? child,
-              ImageChunkEvent? loadingProgress) {
+          loadingBuilder: (BuildContext ctx, Widget? child, ImageChunkEvent? loadingProgress) {
             if (loadingProgress == null) {
               return child ?? Container();
             } else {
               return const Center(
                   child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          ColorResource.primary)));
+                      valueColor: AlwaysStoppedAnimation<Color>(ColorResource.primary)));
             }
           },
         ),

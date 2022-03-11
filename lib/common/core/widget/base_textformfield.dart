@@ -72,8 +72,8 @@ class BaseTextFormField extends StatelessWidget {
     this.onEditingComplete,
     this.onTab,
     this.icon,
-    this.isDense,
-    this.isBorder = false,
+    this.isDense = true,
+    this.isBorder = true,
     this.enabledBorder,
     this.focusedBorder,
     this.errorBorder,
@@ -105,12 +105,20 @@ class BaseTextFormField extends StatelessWidget {
   }
 
   InputDecoration border() {
+    double widthBorder = 1.5;
     return !isCollapsed!
         ? InputDecoration(
-            hintStyle: hintStyle,
+            hintStyle: hintStyle ??
+                appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText),
             hintText: hint,
             errorText: error,
-            label: label != null ? Text(label ?? '') : null,
+            label: label != null
+                ? Text(
+                    label ?? '',
+                    style: appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText),
+                  )
+                : Text(hint ?? '',
+                    style: appStyle.textTheme.bodyText1?.apply(color: ColorResource.colorHintText)),
             suffixIcon: suffixIcon,
             suffixIconConstraints: BoxConstraints(
               minWidth: paddingSuffixIcon ?? 36,
@@ -129,8 +137,7 @@ class BaseTextFormField extends StatelessWidget {
             enabledBorder: isBorder!
                 ? enabledBorder ??
                     OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 1, color: Colors.grey),
+                      borderSide: BorderSide(width: widthBorder, color: Colors.grey),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),
@@ -139,8 +146,8 @@ class BaseTextFormField extends StatelessWidget {
             focusedBorder: isBorder!
                 ? focusedBorder ??
                     OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          width: 1, color: ColorResource.primarySwatch),
+                      borderSide:
+                          BorderSide(width: widthBorder, color: ColorResource.primarySwatch),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),
@@ -149,7 +156,7 @@ class BaseTextFormField extends StatelessWidget {
             errorBorder: isBorder!
                 ? errorBorder ??
                     OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1, color: Colors.red),
+                      borderSide: BorderSide(width: widthBorder, color: Colors.red),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),
@@ -158,7 +165,7 @@ class BaseTextFormField extends StatelessWidget {
             focusedErrorBorder: isBorder!
                 ? focusedErrorBorder ??
                     OutlineInputBorder(
-                      borderSide: const BorderSide(width: 1, color: Colors.red),
+                      borderSide: BorderSide(width: widthBorder, color: Colors.red),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),

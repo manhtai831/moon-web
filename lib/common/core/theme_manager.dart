@@ -21,17 +21,28 @@ class ThemeManager {
     toggleableActiveColor: Colors.red,
     // màu appbar, button, effect mặc định
     primarySwatch: ColorResource.primarySwatch,
+    fontFamily: fontFamily,
     textTheme: const TextTheme(
-      headline6: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 14),
-      headline5: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 16),
-      headline4: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 18),
-      headline3: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 20),
-      headline2: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 22),
-      headline1: TextStyle(fontWeight: FontWeight.w900, color: ColorResource.primary, fontSize: 24),
-      bodyText1: TextStyle(fontWeight: FontWeight.w400, color: Colors.black54, fontSize: 14),
-      bodyText2: TextStyle(fontWeight: FontWeight.w400, color: Colors.black54, fontSize: 16),
+      headline6:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 14),
+      headline5:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 18),
+      headline4:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 22),
+      headline3:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 26),
+      headline2:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 30),
+      headline1:
+          TextStyle(fontWeight: FontWeight.w900, color: ColorResource.textColor, fontSize: 34),
+      bodyText1:
+          TextStyle(fontWeight: FontWeight.w400, color: ColorResource.textColor, fontSize: 14),
+      bodyText2:
+          TextStyle(fontWeight: FontWeight.w400, color: ColorResource.textColor, fontSize: 16),
     ),
   );
+
+  static const String fontFamily = 'LexendExa';
 
   static ThemeManager? _themeManager;
 
@@ -39,8 +50,8 @@ class ThemeManager {
     return _themeManager ??= ThemeManager();
   }
 
-  getTheme() {
-    return _themeData;
+  ThemeData getTheme() {
+    return _themeData!;
   }
 
   setTheme({ThemeData? customTheme}) {

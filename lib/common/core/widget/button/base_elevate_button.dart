@@ -33,7 +33,7 @@ class BaseElevatedButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: widthValue,
+      width: widthValue ?? double.infinity,
       height: heightValue,
       child: ElevatedButton(
         onPressed: onTab,
@@ -43,22 +43,20 @@ class BaseElevatedButton extends StatelessWidget {
               style: style ??
                   TextStyle(
                     color: titleColor,
-                    fontSize: titleSize,
+                    fontSize: titleSize ?? 20,
                     fontWeight: titleFontWeight,
                   ),
             ),
         style: buttonStyleValue ??
             ElevatedButton.styleFrom(
+              elevation: 0,
+              padding: const EdgeInsets.symmetric(vertical: 20),
               primary: primaryColorValue,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(borderRadiusValue ?? 0),
+                borderRadius: BorderRadius.circular(borderRadiusValue ?? 100),
               ),
             ),
       ),
     );
   }
 }
-
-
-
-

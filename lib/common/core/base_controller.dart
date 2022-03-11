@@ -3,7 +3,7 @@ import 'package:shop_all_fe/common/resource/enum_resource.dart';
 
 class BaseController extends GetxController {
   Rx<Status> status = Status.loading.obs;
-  var message = ''.obs;
+  Rx<String> message = ''.obs;
 
   @override
   Future<void> onInit() async {
@@ -16,7 +16,7 @@ class BaseController extends GetxController {
   }
 
   Future<void> fetchData() async {
-
+    setStatus(Status.loading);
   }
 
   void setStatus(Status s) {
@@ -27,4 +27,3 @@ class BaseController extends GetxController {
     message.value = s;
   }
 }
-

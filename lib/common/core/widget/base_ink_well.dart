@@ -1,5 +1,6 @@
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
+import 'package:shop_all_fe/common/export_this.dart';
 
 class BaseInkWell extends StatelessWidget {
   final String? title;
@@ -48,14 +49,14 @@ class BaseInkWell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-      color: backgroundColor,
+      color: backgroundColor ?? ColorResource.primary,
       shape: border,
-      borderRadius: BorderRadius.circular(borderRadiusValue ?? 0),
+      borderRadius: BorderRadius.circular(borderRadiusValue ?? 100),
       child: Container(
         decoration: dottedDecoration,
         child: InkWell(
           onTap: onTab,
-          borderRadius: BorderRadius.circular(borderRadiusValue ?? 0),
+          borderRadius: BorderRadius.circular(borderRadiusValue ?? 100),
           child: Container(
             padding: padding ?? EdgeInsets.all(paddingValue ?? 8),
             child: child ??

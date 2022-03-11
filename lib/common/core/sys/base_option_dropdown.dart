@@ -1,8 +1,8 @@
-class BaseOptionDropdown {
+class BaseOptionDropdown<T> {
   String? id;
   String? name;
   String? image;
-  dynamic data;
+  T? data;
 
   BaseOptionDropdown({this.id, this.name, this.image, this.data});
 

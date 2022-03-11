@@ -6,7 +6,7 @@ import 'package:shop_all_fe/common/core/sys/base_option_dropdown.dart';
 
 import '../../export_this.dart';
 
-class DropdownCustom extends StatelessWidget {
+class DropdownCustom<T> extends StatelessWidget {
   final Widget? suffixIcon;
   final Widget? prefixIcon;
   final String? currentValue, hint, error, label;
@@ -61,7 +61,9 @@ class DropdownCustom extends StatelessWidget {
     this.filled,
     this.hintStyle,
     this.selectionStyle,
-    this.selectedStyle, this.bgSelection, this.bgSelected,
+    this.selectedStyle,
+    this.bgSelection,
+    this.bgSelected,
   }) : super(key: key);
 
   @override
@@ -69,9 +71,8 @@ class DropdownCustom extends StatelessWidget {
     return Material(
       child: InkWell(
         borderRadius: BorderRadius.circular(8),
-        onTap: () => (listItems?.length ?? -1) > 0
-            ? openDropdownAnyWhere()
-            : Get.focusScope!.unfocus(),
+        onTap: () =>
+            (listItems?.length ?? -1) > 0 ? openDropdownAnyWhere() : Get.focusScope!.unfocus(),
         child: Focus(
           onFocusChange: (hasFocus) {},
           child: Form(
@@ -107,13 +108,12 @@ class DropdownCustom extends StatelessWidget {
                   return DropdownMenuItem(
                       onTap: () {
                         Get.focusScope!.unfocus();
-                        onTapCallBack?.call(value, index ?? 0);
+                        onTapCallBack?.call(value.data, index ?? 0);
                       },
                       value: value,
                       child: Text(value.name ?? '',
                           style: selectionStyle ??
-                              const TextStyle(
-                                  fontSize: 14, color: Colors.black)));
+                              const TextStyle(fontSize: 14, color: Colors.black)));
                 }).toList(),
                 selectedItemBuilder: (context) => listItems!
                     .map(
@@ -121,9 +121,8 @@ class DropdownCustom extends StatelessWidget {
                         alignment: Alignment.centerLeft,
                         child: Text(
                           value.name ?? '',
-                          style: selectedStyle ??
-                              const TextStyle(
-                                  fontSize: 14, color: Colors.black),
+                          style:
+                              selectedStyle ?? const TextStyle(fontSize: 14, color: Colors.black),
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
@@ -160,8 +159,7 @@ class DropdownCustom extends StatelessWidget {
             enabledBorder: isBorder!
                 ? enabledBorder ??
                     OutlineInputBorder(
-                      borderSide:
-                          const BorderSide(width: 1, color: Colors.grey),
+                      borderSide: const BorderSide(width: 1, color: Colors.grey),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),
@@ -170,8 +168,7 @@ class DropdownCustom extends StatelessWidget {
             focusedBorder: isBorder!
                 ? focusedBorder ??
                     OutlineInputBorder(
-                      borderSide: const BorderSide(
-                          width: 1, color: ColorResource.primarySwatch),
+                      borderSide: const BorderSide(width: 1, color: ColorResource.primarySwatch),
                       borderRadius: BorderRadius.all(
                         Radius.circular(borderRadius ?? 8),
                       ),

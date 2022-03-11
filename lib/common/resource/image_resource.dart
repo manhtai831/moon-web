@@ -1,4 +1,4 @@
 class ImageResource {
-  static const String testImg = 'assets/icons/launcher_icon.png';
-  static const String abc = 'assets/icons/abc.jpg';
+  static const String logo = 'assets/images/logo.png';
+  static const String ic_launch = 'assets/icons/ic_launch.svg';
 }

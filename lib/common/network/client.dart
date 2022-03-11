@@ -4,10 +4,12 @@ import 'package:shop_all_fe/common/export_this.dart';
 import 'package:shop_all_fe/common/network/service.dart';
 
 class Client {
-  static String _BASE_URL = 'https://api.clinic.vietsing.xteldev.com/app';
+  static String _baseUrl = 'https://api.clinic.vietsing.xteldev.com/app';
+  static String _authorization = '';
+
   static const int _CONNECT_TIMEOUT = 1000;
   static const int _RECEIVE_TIMEOUT = 1000;
-  static const String _CONTENT_TYPE = 'application/json';
+  static const String _CONTENT_TYPE = 'application/json;charset=utf-8';
   static Dio? _dio;
   static Service? _service;
 
@@ -15,27 +17,39 @@ class Client {
     return _service ??= Service(_configDio());
   }
 
+  static final PrettyDioLogger _prettyDioLogger = PrettyDioLogger(
+      error: true,
+      logPrint: _logPrint,
+      request: false,
+      requestBody: true,
+      responseBody: true,
+      requestHeader: true);
+
+  static Map<String, dynamic> makeHeaders({Map<String, dynamic>? addHeader}) {
+    Map<String, dynamic> headers = {};
+    headers['token'] = _authorization;
+    return headers;
+  }
+
   static Dio _configDio() {
     _dio ??= Dio(BaseOptions(
-        baseUrl: _BASE_URL,
+        baseUrl: _baseUrl,
         connectTimeout: _CONNECT_TIMEOUT,
         receiveTimeout: _RECEIVE_TIMEOUT,
-        headers: {},
+        headers: makeHeaders(),
         contentType: _CONTENT_TYPE))
-      ..interceptors.add(PrettyDioLogger(
-          error: true,
-          logPrint: _logPrint,
-          request: false,
-          requestBody: false,
-          responseBody: false,
-          requestHeader: true));
+      ..interceptors.add(_prettyDioLogger);
     return _dio!;
   }
 
   void setUrl(String? url) {
     if (url != null) {
-      _BASE_URL = url;
+      _baseUrl = url;
     }
+  }
+
+  void setAuthorization(String authorization) {
+    _authorization = authorization;
   }
 
   static void _logPrint(v) {
